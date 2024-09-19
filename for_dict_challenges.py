@@ -28,14 +28,20 @@ for i in range(len(new_dict)):
 # Дан список учеников, нужно вывести самое часто повторящееся имя
 # Пример вывода:
 # Самое частое имя среди учеников: Маша
-students = [
+students_2 = [
     {'first_name': 'Вася'},
     {'first_name': 'Петя'},
     {'first_name': 'Маша'},
     {'first_name': 'Маша'},
     {'first_name': 'Оля'},
 ]
-# ???
+lists = []
+for i in range(0, len(students_2)):
+    name = students_2[i]['first_name']
+    lists.append(name)
+print(lists)
+
+    
 
 
 # Задание 3
