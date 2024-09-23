@@ -2,8 +2,8 @@
 # Необходимо вывести имена всех учеников из списка с новой строки
 
 names = ['Оля', 'Петя', 'Вася', 'Маша']
-for i in range(0, len(names)):
-    print(names[i])
+for name in names:
+    print(name)
 
 
 # Задание 2
@@ -27,13 +27,13 @@ is_male = {
     'Маша': False,
 }
 names = ['Оля', 'Петя', 'Вася', 'Маша']
-for i in range(0, len(names)):
-    sex = is_male.get(names[i]) 
+for name in names:
+    sex = is_male.get(name) 
     if sex == True:
         sex = 'мужской'
     else:
         sex =  'женский'
-    print(f"{names[i]}: {sex}")
+    print(f"{name}: {sex}")
 
 
 # Задание 4
@@ -54,8 +54,13 @@ for i in range(0, n):
     group = i + 1
     number_of_people = len(groups[i])
     print(f"Группа {group}: {number_of_people} ученика")
-
-
+group_number = 1
+"""
+for group in groups:
+    number_of_people = len(group)
+    print(f"Группа {group_number}: {number_of_people} ученика")
+    group_number += 1
+"""
 # Задание 5
 # Для каждой пары учеников нужно с новой строки перечислить учеников, которые в неё входят
 # Пример вывода:
@@ -69,9 +74,8 @@ groups = [
 ]
 
 n = len(groups)
-#print(f"Всего {n} группы.")
 for i in range(0, n):
     group = i + 1
     print(f"Группа {group}:", end=' ')
-    for j in range(0, len(groups[i])):
-        print(f"{groups[i][j]}")
+    group_content = ','.join(groups[i])
+    print(group_content)
