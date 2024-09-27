@@ -39,12 +39,15 @@ lists = []
 names_count = {}
 for i in range(0, len(students_2)):
     name = students_2[i]['first_name']
+    print(name)
     lists.append(name)
+    print(lists)
 
 
 
 for i in range(len(lists)):
     names_count[lists[i]] = lists.count(lists[i])
+    print(names_count)
 max_key = max(names_count, key = names_count.get)
 print(f"Самое частое имя среди учеников: {max_key}")
 

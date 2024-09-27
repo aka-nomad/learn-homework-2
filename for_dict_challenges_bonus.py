@@ -65,6 +65,23 @@ def generate_chat_history():
         })
     return messages
 
+def get_max_messages(messages): #функция считает айди пользователя, который написал больше всех сообщений
+    """
+    создаем пустой список и словарь. В список собираем все id пользователей, 
+    в словаре в виде ключ:значение храним id пользователя и сколько раз он написал сообщение: {id:id_count}
+    """
+    lists = []
+    user_id = {}
+
+    for i in range(0, len(messages)):
+        id = messages[i]['sent_by'] #пробигаемся по списку словарей с сообщениями и "выдергиваем" из словарей id пользователя
+        lists.append(id) #добавляем id пользователя в список
+    
+    for i in range(0, len(lists)):
+        user_id[lists[i]] = lists.count(lists[i]) #теперь пробигаемся по списку с id и считаем сколько раз каждый id встретился в списке
+        max_key = max(user_id, key = user_id.get)
+    return max_key
 
 if __name__ == "__main__":
-    print(generate_chat_history())
+    messages = generate_chat_history()
+    print(f"ID пользователя, который написал больше всех сообщений:{get_max_messages(messages)}")
