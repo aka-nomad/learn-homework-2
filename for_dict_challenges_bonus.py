@@ -82,6 +82,28 @@ def get_max_messages(messages): #функция считает айди поль
         max_key = max(user_id, key = user_id.get)
     return max_key
 
+
+
+def get_max_threds(messages):
+    lists =[]
+    message_id = {}
+
+    for i in range(0, len(messages)):
+        id = messages[i]['reply_for']
+        lists.append(id)
+
+    for i in range(0, len(lists)):
+        message_id[lists[i]] = lists.count(lists[i])
+        
+    sorted_message_id = sorted(message_id.items(), key=lambda item: item[1], reverse=True)
+    #max_key = max(message_id, key = message_id.get)
+    if sorted_message_id[0][0] == None:
+        return sorted_message_id[1][0]
+    else:
+        return sorted_message_id[0][0]
+
+
 if __name__ == "__main__":
     messages = generate_chat_history()
-    print(f"ID пользователя, который написал больше всех сообщений:{get_max_messages(messages)}")
+    print(f"ID пользователя, который написал больше всех сообщений:{get_max_messages(messages)}",
+          f"идентификатор сообщений, который стал началом для самых длинных тредов (цепочек ответов):{get_max_threds(messages)}", sep='\n')
