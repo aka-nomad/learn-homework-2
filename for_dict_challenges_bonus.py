@@ -33,7 +33,7 @@ messages = [
 import random
 import uuid
 import datetime
-
+from collections import Counter
 import lorem
 
 
@@ -70,6 +70,7 @@ def get_max_messages(messages): #функция считает айди поль
     создаем пустой список и словарь. В список собираем все id пользователей, 
     в словаре в виде ключ:значение храним id пользователя и сколько раз он написал сообщение: {id:id_count}
     """
+    """
     lists = []
     user_id = {}
 
@@ -81,7 +82,17 @@ def get_max_messages(messages): #функция считает айди поль
         user_id[lists[i]] = lists.count(lists[i]) #теперь пробигаемся по списку с id и считаем сколько раз каждый id встретился в списке
         max_key = max(user_id, key = user_id.get)
     return max_key
-
+    """
+    sent_by_counts = Counter(message['sent_by'] for message in messages)
+    print(sent_by_counts)
+    # Нахождение пользователя с максимальным количеством сообщений
+    most_messages_user = sent_by_counts.most_common(1)
+    print(most_messages_user)
+    if most_messages_user:
+        user_id, count = most_messages_user[0]
+        print(f'Пользователь с id {user_id} отправил больше всего сообщений: {count}.')
+    else:
+        print('Нет отправленных сообщений.')
 
 
 def get_max_threds(messages):
