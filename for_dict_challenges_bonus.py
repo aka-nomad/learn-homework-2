@@ -35,6 +35,7 @@ import uuid
 import datetime
 from collections import Counter
 import lorem
+from itertools import groupby
 
 
 def generate_chat_history():
@@ -84,15 +85,57 @@ def get_max_messages(messages): #функция считает айди поль
     return max_key
     """
     sent_by_counts = Counter(message['sent_by'] for message in messages)
-    print(sent_by_counts)
-    # Нахождение пользователя с максимальным количеством сообщений
     most_messages_user = sent_by_counts.most_common(1)
-    print(most_messages_user)
     if most_messages_user:
         user_id, count = most_messages_user[0]
-        print(f'Пользователь с id {user_id} отправил больше всего сообщений: {count}.')
+        return user_id, count
+        
+        #print(f'Пользователь с id {user_id} отправил больше всего сообщений: {count}.')
     else:
         print('Нет отправленных сообщений.')
+
+
+def printing(messages):
+    for message in messages:
+        print(message, end='\n*********************************************************************************************************************\n')
+
+
+def get_id_of_max_reply_message(threads, messages):
+    for message in messages:
+        if threads == message['id']:
+            return message['sent_by']
+        
+def get_user_id_seen_by_max_users(messages):
+    max_seen_by = 0
+    for message in messages:
+        new_message_seen_by = [i for i, _ in groupby(message['seen_by'])]
+        seen_by = len(new_message_seen_by)    
+        if seen_by > max_seen_by:
+            max_seen_by = seen_by
+            id = message['sent_by']
+    return max_seen_by, id 
+
+def max_time_for_messages(messages):
+    before_12 = 0
+    between_12_18 = 0
+    after_18 = 0
+    
+    for message in messages:
+        time = message['sent_at']
+        if time.hour <=12:
+            before_12 += 1
+        elif time.hour >=12 and time.hour <=18:
+            between_12_18 += 1
+        else:
+            after_18 += 1 
+        
+    if between_12_18 <  before_12 > after_18:
+        return "больше всего сообщений утром (до 12)"
+    elif before_12 < between_12_18 > after_18:
+        return 'больше всего сообщений днем (с 12 до 18)'
+    else:
+        return 'больше всего сообщений вечером (после 18)' 
+    
 
 
 def get_max_threds(messages):
@@ -107,7 +150,6 @@ def get_max_threds(messages):
         message_id[lists[i]] = lists.count(lists[i])
         
     sorted_message_id = sorted(message_id.items(), key=lambda item: item[1], reverse=True)
-    #max_key = max(message_id, key = message_id.get)
     if sorted_message_id[0][0] == None:
         return sorted_message_id[1][0]
     else:
@@ -116,5 +158,10 @@ def get_max_threds(messages):
 
 if __name__ == "__main__":
     messages = generate_chat_history()
-    print(f"ID пользователя, который написал больше всех сообщений:{get_max_messages(messages)}",
+    printing(messages)
+    print(f"айди пользователя с максимальным числом отправленных сообшений:{get_max_messages(messages)[0]}, число сообщений от пользователя: {get_max_messages(messages)[1]}",
+          f"айди пользователя на сообщение которого больше всего отвечали: {get_id_of_max_reply_message(get_max_threds(messages), messages)}",
+          f"айди пользователя, сообщения которого видело больше всего уникальных пользователей:{get_user_id_seen_by_max_users(messages)[1]}",
+          max_time_for_messages(messages),
           f"идентификатор сообщений, который стал началом для самых длинных тредов (цепочек ответов):{get_max_threds(messages)}", sep='\n')
+    
